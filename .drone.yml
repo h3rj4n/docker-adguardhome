@@ -1,0 +1,35 @@
+kind: pipeline
+name: default
+
+platform:
+  os: linux
+  arch: arm64
+
+steps:
+  - name: build
+    image: plugins/docker:linux-arm64
+    settings:
+      repo: h3rj4n/adguardhome
+      tags:
+        - latest
+        - '0.99.2'
+        - '0.99'
+      build_args:
+        - VERSION=0.99.2
+      username:
+        from_secret: docker_username
+      password:
+        from_secret: docker_password
+
+  - name: deploy
+    image: docker:latest
+    volumes:
+      - name: docker_sock
+        path: /var/run/docker.sock
+    commands:
+      - docker service update -q --image h3rj4n/adguardhome:latest adguard_adguard
+
+volumes:
+  - name: docker_sock
+    host:
+      path: /var/run/docker.sock
