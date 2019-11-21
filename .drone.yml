@@ -12,10 +12,10 @@ steps:
       repo: h3rj4n/adguardhome
       tags:
         - latest
-        - '0.99.2'
+        - '0.99.3'
         - '0.99'
       build_args:
-        - VERSION=0.99.2
+        - VERSION=0.99.3
       username:
         from_secret: docker_username
       password:
